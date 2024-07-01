@@ -41,12 +41,12 @@ This data source exports the following attributes in addition to the arguments a
 * `access_role` - ARN of the AWS Identity and Access Managment role.
 * `arn` - ARN of the Connector. 
 * `as2_config` - Structure containing the parameters for an AS2 connector object. Contains the following attributes:
-  * `basic_auth_secret_id` -  Basic authentication for AS2 connector API. 
-  * `Compression` - Specifies whether AS@ file is compressed must be ZLIB or DISABLED
-  * `encryption_algorithm` - Algorithm used to encrypt file. Must be AES128_CBC or AES192_CBC or AES256_CBC or DES_EDE3_CBC or NONE.
+  * `basic_auth_secret_id` -  Basic authentication for AS2 connector API. Returns 
+  * `Compression` - Specifies whether AS2 file is compressed. Will be ZLIB or DISABLED
+  * `encryption_algorithm` - Algorithm used to encrypt file. Will be AES128_CBC or AES192_CBC or AES256_CBC or DES_EDE3_CBC or NONE.
   * `local_profile_id` - Unique identifier for AS2 local profile.
-  * `mdn_response` - Used for outbound requests to tell if response is asynchronous or not. Must be either SYNC or NONE.
-  * `mdn_signing_algorithm` - Signing algorithm for MDN response. Must be SHA256 or SHA384 or SHA512 or SHA1 or NONE or DEFAULT.
+  * `mdn_response` - Used for outbound requests to tell if response is asynchronous or not. Will be either SYNC or NONE.
+  * `mdn_signing_algorithm` - Signing algorithm for MDN response. Will be SHA256 or SHA384 or SHA512 or SHA1 or NONE or DEFAULT.
   * `message_subject` - Subject HTTP header attribute in outbound AS2 messages to the connector.
   * `partner_profile_id` - Unique identifier used by connector for partner profile.
   * `signing_algorithm` - Algorithm used for signing AS2 messages sent with the connector.
