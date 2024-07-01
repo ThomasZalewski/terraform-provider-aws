@@ -5,14 +5,13 @@ package transfer
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/YakDriver/regexache"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	fwtypes "github.com/hashicorp/terraform-provider-aws/internal/framework/types"
 
-	//"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
-	//awstypes "github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -54,7 +53,7 @@ func (d *dataSourceConnector) Schema(ctx context.Context, req datasource.SchemaR
 				CustomType: fwtypes.NewListNestedObjectTypeOf[dsAs2Config](ctx),
 				Computed:   true,
 			},
-			"connector_id": schema.StringAttribute{
+			names.AttrID: schema.StringAttribute{
 				CustomType: fwtypes.RegexpType,
 				Required:   true,
 				Validators: []validator.String{
@@ -100,7 +99,7 @@ func (d *dataSourceConnector) Read(ctx context.Context, req datasource.ReadReque
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if !data.ConnectorId.IsNull() {
+	if !data.ConnectorId.IsNull() || !data.ConnectorId.IsUnknown() {
 		describeConnectorInput.ConnectorId = data.ConnectorId.ValueStringPointer()
 	}
 
@@ -114,11 +113,12 @@ func (d *dataSourceConnector) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	// I do not think I need a finder
-
 	resp.Diagnostics.Append(flex.Flatten(ctx, description.Connector, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for _, j := range data.ServiceManagedEgressIpAddresses.Elements() {
+		fmt.Println(j)
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -129,7 +129,7 @@ type dsConnectorData struct {
 	Arn                             types.String                                  `tfsdk:"arn"`
 	AccessRole                      types.String                                  `tfsdk:"access_role"`
 	As2Config                       fwtypes.ListNestedObjectValueOf[dsAs2Config]  `tfsdk:"as2_config"`
-	ConnectorId                     fwtypes.Regexp                                `tfsdk:"connector_id"`
+	ConnectorId                     fwtypes.Regexp                                `tfsdk:"id"`
 	LoggingRole                     types.String                                  `tfsdk:"logging_role"`
 	SecurityPolicyName              types.String                                  `tfsdk:"security_policy_name"`
 	ServiceManagedEgressIpAddresses fwtypes.ListValueOf[types.String]             `tfsdk:"service_managed_egress_ip_addresses"`

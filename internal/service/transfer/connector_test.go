@@ -242,6 +242,7 @@ func testAccCheckConnectorDestroy(ctx context.Context) resource.TestCheckFunc {
 			if rs.Type != "aws_transfer_connector" {
 				continue
 			}
+			fmt.Println(rs.Primary.ID)
 
 			_, err := tftransfer.FindConnectorByID(ctx, conn, rs.Primary.ID)
 
