@@ -23,8 +23,8 @@ Terraform data source for managing an AWS Transfer Family Connector.
 ### Basic Usage
 
 ```terraform
-data "aws_transfer_connector" "this" {
-  connector_id = "c-xxxxxxxxxxxxxx"
+data "aws_transfer_connector" "test" {
+  id = "c-xxxxxxxxxxxxxx"
 }
 ```
 
@@ -32,8 +32,7 @@ data "aws_transfer_connector" "this" {
 
 The following arguments are required:
 
-* `connector_id` - (Required) Unique identifier for connector
-
+* `id` - (Required) Unique identifier for connector
 
 ## Attribute Reference
 
@@ -42,14 +41,25 @@ This data source exports the following attributes in addition to the arguments a
 * `access_role` - ARN of the AWS Identity and Access Managment role.
 * `arn` - ARN of the Connector. 
 * `as2_config` - Structure containing the parameters for an AS2 connector object. Contains the following attributes:
-
-  
-* `connector_id` - Unique identifier for the connector.
+  * `basic_auth_secret_id` -  Basic authentication for AS2 connector API. 
+  * `Compression` - Specifies whether AS@ file is compressed must be ZLIB or DISABLED
+  * `encryption_algorithm` - Algorithm used to encrypt file. Must be AES128_CBC or AES192_CBC or AES256_CBC or DES_EDE3_CBC or NONE.
+  * `local_profile_id` - Unique identifier for AS2 local profile.
+  * `mdn_response` - Used for outbound requests to tell if response is asynchronous or not. Must be either SYNC or NONE.
+  * `mdn_signing_algorithm` - Signing algorithm for MDN response. Must be SHA256 or SHA384 or SHA512 or SHA1 or NONE or DEFAULT.
+  * `message_subject` - Subject HTTP header attribute in outbound AS2 messages to the connector.
+  * `partner_profile_id` - Unique identifier used by connector for partner profile.
+  * `signing_algorithm` - Algorithm used for signing AS2 messages sent with the connector.
 * `logging_role` -  ARN of the IAM role that allows a connector to turn on CLoudwatch logging for Amazon S3 events.
 * `security_policy_name` - Name of security policy.
 * `service_managed_egress_ip_addresses` - List of egress Ip addresses.
-  * `` -
-
+* `sftp_config` - Object containing the following attributes:
+  * `trusted_host_keys` - List of the public portions of the host keys that are used to identify the servers the connector is connected to. 
+  * `user_secret_id` - Identifer for the secret in AWS Secrets Manager that contains the SFTP user's private key, and/or password.
+* `tags` - Object containing the following attributes:
+  * `key` - Name of the tag.
+  * `value` - Values associated with the tags key.
+* `url` - URL of the partner's AS2 or SFTP endpoint.
 
 
 
